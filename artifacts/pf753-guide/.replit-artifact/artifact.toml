@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "PowerFlex 753 - دليل البارامترات"
+version = "1.0.0"
+id = "artifacts/pf753-guide"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18479
+
+[services.development]
+run = "pnpm --filter @workspace/pf753-guide run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/pf753-guide", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/pf753-guide/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18479"
+BASE_PATH = "/"
