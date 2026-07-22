@@ -1,32 +1,32 @@
 import React from 'react';
-import { Key, Play, Square, Settings, Eye, CornerDownLeft, ArrowLeft, ArrowRight, ArrowUp, ArrowDown, Hash, Type, Folder } from 'lucide-react';
+import { Key, Square, Settings, Eye, CornerDownLeft, ArrowLeft, ArrowUp, Hash, Type, Folder } from 'lucide-react';
 
 export default function HimGuide() {
   return (
-    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out pb-10">
+    <div className="space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out pb-10">
       <div>
-        <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2 flex items-center gap-3">
-          <Key className="w-8 h-8 text-primary" />
-          دليل استخدام لوحة التحكم (HIM)
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-1 flex items-center gap-2 sm:gap-3">
+          <Key className="w-6 h-6 sm:w-8 sm:h-8 text-primary shrink-0" />
+          <span>دليل استخدام لوحة التحكم (HIM)</span>
         </h1>
-        <p className="text-muted-foreground">تعرف على وظائف الأزرار وكيفية تغيير البارامترات خطوة بخطوة</p>
+        <p className="text-xs sm:text-sm text-muted-foreground">تعرف على وظائف الأزرار وكيفية تغيير البارامترات خطوة بخطوة</p>
       </div>
 
       {/* Buttons Guide */}
-      <div className="bg-card border border-border rounded-xl p-6">
-        <h2 className="text-xl font-bold mb-6 flex items-center gap-2 border-b border-border pb-4">
+      <div className="bg-card border border-border rounded-xl p-4 sm:p-6">
+        <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 flex items-center gap-2 border-b border-border pb-3 sm:pb-4">
           <Settings className="w-5 h-5 text-primary" />
-          وظائف الأزرار
+          <span>وظائف الأزرار</span>
         </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           <ButtonDesc 
-            icon={<div className="w-4 h-4 bg-success rounded-sm" />} 
+            icon={<div className="w-3.5 h-3.5 sm:w-4 sm:h-4 bg-success rounded-sm" />} 
             name="Start" desc="بدء تشغيل الدرايف (إذا كان الإقلاع مبرمجاً من HIM)" 
             bg="bg-[#1a3a1a] border-success" />
           
           <ButtonDesc 
-            icon={<div className="w-4 h-4 rounded-full bg-destructive" />} 
+            icon={<div className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-destructive" />} 
             name="Stop" desc="إيقاف الدرايف أو إعادة ضبط الأخطاء" 
             bg="bg-[#3a1a1a] border-destructive" />
             
@@ -63,7 +63,7 @@ export default function HimGuide() {
       </div>
 
       {/* Step by Step Tutorials */}
-      <div className="space-y-8">
+      <div className="space-y-6 sm:space-y-8">
         <Tutorial 
           title="كيف تقرأ قيمة بارامتر محدد (مثال: P001)"
           steps={[
@@ -99,13 +99,13 @@ export default function HimGuide() {
 
 function ButtonDesc({ icon, name, desc, bg }: any) {
   return (
-    <div className="flex items-center gap-4 bg-background p-3 rounded-lg border border-border">
-      <div className={`w-12 h-12 flex-shrink-0 rounded-full border-2 flex items-center justify-center ${bg} shadow-md`}>
+    <div className="flex items-center gap-3 bg-background p-3 rounded-lg border border-border">
+      <div className={`w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-full border-2 flex items-center justify-center ${bg} shadow-md`}>
         {icon}
       </div>
-      <div>
-        <div className="font-mono font-bold text-sm text-foreground">{name}</div>
-        <div className="text-xs text-muted-foreground mt-1">{desc}</div>
+      <div className="min-w-0 flex-1">
+        <div className="font-mono font-bold text-xs sm:text-sm text-foreground truncate">{name}</div>
+        <div className="text-[11px] sm:text-xs text-muted-foreground mt-0.5 leading-snug">{desc}</div>
       </div>
     </div>
   );
@@ -116,27 +116,27 @@ function Tutorial({ title, steps }: { title: string, steps: any[] }) {
     <div className="bg-card border border-border rounded-xl overflow-hidden relative group">
       <div className="absolute top-0 right-0 w-1 h-full bg-primary/50 group-hover:bg-primary transition-colors" />
       
-      <div className="p-5 border-b border-border bg-card/50">
-        <h3 className="font-bold text-lg">{title}</h3>
+      <div className="p-4 sm:p-5 border-b border-border bg-card/50">
+        <h3 className="font-bold text-base sm:text-lg text-foreground">{title}</h3>
       </div>
       
-      <div className="p-5">
-        <div className="space-y-4">
+      <div className="p-4 sm:p-5">
+        <div className="space-y-3 sm:space-y-4">
           {steps.map((step, idx) => (
-            <div key={idx} className="flex gap-4">
+            <div key={idx} className="flex gap-3 sm:gap-4">
               <div className="flex flex-col items-center">
-                <div className="w-8 h-8 rounded-full bg-background border border-primary text-primary flex items-center justify-center font-bold text-sm z-10">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-background border border-primary text-primary flex items-center justify-center font-bold text-xs sm:text-sm shrink-0 z-10">
                   {idx + 1}
                 </div>
                 {idx < steps.length - 1 && (
                   <div className="w-0.5 h-full bg-border my-1" />
                 )}
               </div>
-              <div className="flex-1 bg-background border border-border rounded-lg p-3 flex items-center gap-3 mt-1">
-                <div className="p-2 bg-primary/10 rounded text-primary">
+              <div className="flex-1 bg-background border border-border rounded-lg p-2.5 sm:p-3 flex items-center gap-2.5 sm:gap-3">
+                <div className="p-1.5 sm:p-2 bg-primary/10 rounded text-primary shrink-0">
                   <step.icon className="w-4 h-4" />
                 </div>
-                <p className="text-sm font-medium">{step.text}</p>
+                <p className="text-xs sm:text-sm font-medium leading-relaxed">{step.text}</p>
               </div>
             </div>
           ))}

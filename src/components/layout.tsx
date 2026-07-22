@@ -95,7 +95,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* Main Content */}
       <main className="flex-1 flex flex-col h-[100dvh] overflow-hidden pt-16 md:pt-0 bg-background relative">
         <div className="absolute inset-0 pointer-events-none opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '32px 32px' }} />
-        <div className="flex-1 overflow-y-auto p-4 md:p-8 z-10">
+        <div className="flex-1 overflow-y-auto p-3.5 sm:p-5 md:p-8 z-10">
           <div className="max-w-6xl mx-auto w-full">
             {children}
           </div>
