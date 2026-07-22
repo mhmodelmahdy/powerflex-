@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'wouter';
-import { Settings, Server, BookOpen, Key, AlertTriangle, Menu, X, TerminalSquare } from 'lucide-react';
+import { Settings, Server, BookOpen, Key, AlertTriangle, Menu, X, LayoutGrid } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -8,7 +8,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const [isMobileOpen, setIsMobileOpen] = React.useState(false);
 
   const navItems = [
-    { href: '/', labelAr: 'لوحة التحكم', labelEn: 'Dashboard', icon: TerminalSquare },
+    { href: '/', labelAr: 'الصفحة الرئيسية', labelEn: 'Home Hub', icon: LayoutGrid },
     { href: '/parameters', labelAr: 'البحث عن بارامتر', labelEn: 'Parameters Browser', icon: Settings },
     { href: '/groups', labelAr: 'مجموعات البارامترات', labelEn: 'Parameter Groups', icon: Server },
     { href: '/him-guide', labelAr: 'دليل استخدام HIM', labelEn: 'HIM Guide', icon: Key },
