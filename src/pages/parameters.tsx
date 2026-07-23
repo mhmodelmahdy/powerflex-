@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { Search, Hash, SlidersHorizontal, Lock, Edit3 } from 'lucide-react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Search, Hash, SlidersHorizontal, Lock, Edit3, Folder } from 'lucide-react';
 import { parameters, parameterGroups, Parameter } from '@/data/parameters';
 import { Input } from '@/components/ui/input';
 
@@ -7,12 +7,21 @@ export default function ParametersBrowser() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeGroup, setActiveGroup] = useState<string>('all');
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const groupParam = urlParams.get('group');
+    if (groupParam && parameterGroups.some(g => g.id === groupParam)) {
+      setActiveGroup(groupParam);
+    }
+  }, []);
+
   const filteredParams = useMemo(() => {
     return parameters.filter(p => {
       const matchesSearch = 
         p.nameEn.toLowerCase().includes(searchTerm.toLowerCase()) || 
         p.nameAr.includes(searchTerm) || 
-        p.id.toString().includes(searchTerm);
+        p.id.toString().includes(searchTerm) ||
+        (p.subGroup && p.subGroup.toLowerCase().includes(searchTerm.toLowerCase()));
       
       const matchesGroup = activeGroup === 'all' || p.group === activeGroup;
       
@@ -25,9 +34,9 @@ export default function ParametersBrowser() {
       <div>
         <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-1 flex items-center gap-2 sm:gap-3">
           <Search className="w-6 h-6 sm:w-8 sm:h-8 text-primary shrink-0" />
-          <span>البحث عن بارامتر</span>
+          <span>البحث عن بارامتر (Parameters Browser)</span>
         </h1>
-        <p className="text-xs sm:text-sm text-muted-foreground">ابحث برقم البارامتر، أو الاسم بالعربي أو الإنجليزي</p>
+        <p className="text-xs sm:text-sm text-muted-foreground">ابحث برقم البارامتر، أو الاسم بالعربي أو الإنجليزي، أو اسم المجموعة الفرعية</p>
       </div>
 
       {/* Search Input & Group Filters */}
@@ -35,7 +44,7 @@ export default function ParametersBrowser() {
         <div className="relative w-full">
           <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground pointer-events-none" />
           <Input 
-            placeholder="مثال: 90 أو Speed أو مرجع..." 
+            placeholder="مثال: 520 أو Max Fwd Speed أو Metering أو سرعة..." 
             className="pl-4 pr-9 sm:pr-10 bg-background border-border h-11 sm:h-12 text-base sm:text-lg focus-visible:ring-primary"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -77,8 +86,8 @@ export default function ParametersBrowser() {
 
       {/* Parameter Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-        {filteredParams.map(param => (
-          <ParameterCard key={param.id} param={param} />
+        {filteredParams.map((param, index) => (
+          <ParameterCard key={`${param.id}-${param.subGroup || index}`} param={param} />
         ))}
         
         {filteredParams.length === 0 && (
@@ -101,12 +110,12 @@ function ParameterCard({ param }: { param: Parameter }) {
       <div className={`h-1 w-full ${group?.color.split(' ')[0]} absolute top-0 left-0 right-0`} />
       
       <div className="p-4 sm:p-5 flex-1 flex flex-col">
-        <div className="flex justify-between items-center mb-3">
+        <div className="flex justify-between items-center mb-2.5">
           <div className="flex items-center gap-1.5 bg-background border border-border px-2.5 py-1 rounded-md">
             <Hash className="w-3.5 h-3.5 text-primary" />
             <span className="font-mono font-bold text-base sm:text-lg">{param.id}</span>
           </div>
-          
+
           <div className={`text-[10px] px-2 py-1 rounded border font-bold ${param.rw === 'R' ? 'bg-secondary text-muted-foreground border-border' : 'bg-primary/10 text-primary border-primary/30'}`}>
             {param.rw === 'R' ? (
               <span className="flex items-center gap-1"><Lock className="w-3 h-3" /> Read Only</span>
@@ -115,6 +124,13 @@ function ParameterCard({ param }: { param: Parameter }) {
             )}
           </div>
         </div>
+
+        {param.subGroup && (
+          <div className="flex items-center gap-1 text-[11px] text-primary/80 font-mono mb-1.5">
+            <Folder className="w-3 h-3 shrink-0" />
+            <span className="truncate">{group?.nameEn} &gt; {param.subGroup}</span>
+          </div>
+        )}
 
         <div className="mb-3">
           <h3 className="text-lg sm:text-xl font-bold text-foreground leading-snug">{param.nameAr}</h3>

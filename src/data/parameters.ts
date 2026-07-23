@@ -9,6 +9,7 @@ export interface Parameter {
   unit: string;
   rw: RW;
   group: string;
+  subGroup?: string;
 }
 
 export interface FaultCode {
@@ -20,133 +21,294 @@ export interface FaultCode {
 }
 
 export const parameterGroups = [
-  { id: 'monitoring', nameEn: 'Monitoring', nameAr: 'المراقبة', start: 1, end: 99, color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' },
-  { id: 'motor', nameEn: 'Motor Data', nameAr: 'بيانات الموتور', start: 27, end: 99, color: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30' },
-  { id: 'speed', nameEn: 'Speed Reference', nameAr: 'مرجع السرعة', start: 90, end: 199, color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' },
-  { id: 'control', nameEn: 'Control', nameAr: 'التحكم', start: 300, end: 399, color: 'bg-amber-500/20 text-amber-400 border-amber-500/30' },
-  { id: 'protection', nameEn: 'Protection', nameAr: 'الحماية', start: 400, end: 499, color: 'bg-red-500/20 text-red-400 border-red-500/30' },
-  { id: 'diagnostics', nameEn: 'Diagnostics', nameAr: 'التشخيصات', start: 900, end: 999, color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' }
+  { id: 'monitor', nameEn: 'Monitor', nameAr: 'المراقبة والقياس', start: 1, end: 22, color: 'bg-rose-500/20 text-rose-400 border-rose-500/30' },
+  { id: 'motor_control', nameEn: 'Motor Control', nameAr: 'التحكم بالموتور', start: 25, end: 1660, color: 'bg-amber-500/20 text-amber-400 border-amber-500/30' },
+  { id: 'feedback_io', nameEn: 'Feedback & I/O', nameAr: 'التغذية الراجعة والمدخلات/المخرجات', start: 150, end: 282, color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' },
+  { id: 'drive_cfg', nameEn: 'Drive Cfg', nameAr: 'تهيئة الدرايف', start: 300, end: 409, color: 'bg-sky-500/20 text-sky-400 border-sky-500/30' },
+  { id: 'protection', nameEn: 'Protection', nameAr: 'الحماية', start: 409, end: 950, color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' },
+  { id: 'speed_control', nameEn: 'Speed Control', nameAr: 'التحكم بالسرعة', start: 520, end: 577, color: 'bg-pink-500/20 text-pink-400 border-pink-500/30' },
+  { id: 'torque_control', nameEn: 'Torque Control', nameAr: 'التحكم بالعزم', start: 675, end: 685, color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' },
+  { id: 'communication', nameEn: 'Communication', nameAr: 'الاتصالات', start: 871, end: 912, color: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30' },
+  { id: 'diagnostics', nameEn: 'Diagnostics', nameAr: 'التشخيصات', start: 930, end: 953, color: 'bg-lime-500/20 text-lime-400 border-lime-500/30' }
 ];
 
 export const parameters: Parameter[] = [
-  // Monitoring
-  { id: 1, nameEn: 'Output Frequency', nameAr: 'تردد الخرج', range: '0–500', defaultVal: '—', unit: 'Hz', rw: 'R', group: 'monitoring' },
-  { id: 2, nameEn: 'Commanded Freq', nameAr: 'التردد المأمور', range: '0–500', defaultVal: '—', unit: 'Hz', rw: 'R', group: 'monitoring' },
-  { id: 3, nameEn: 'Output Current', nameAr: 'تيار الخرج', range: '0–Drive Max', defaultVal: '—', unit: 'Amps', rw: 'R', group: 'monitoring' },
-  { id: 4, nameEn: 'Output Voltage', nameAr: 'جهد الخرج', range: '0–Drive Max', defaultVal: '—', unit: 'VAC', rw: 'R', group: 'monitoring' },
-  { id: 5, nameEn: 'Output Power', nameAr: 'قدرة الخرج', range: '—Rated–Rated', defaultVal: '—', unit: 'kW', rw: 'R', group: 'monitoring' },
-  { id: 6, nameEn: 'Output Torque', nameAr: 'عزم الخرج', range: '—800–800', defaultVal: '—', unit: '%', rw: 'R', group: 'monitoring' },
-  { id: 7, nameEn: 'Motor Speed', nameAr: 'سرعة الموتور', range: '0–65535', defaultVal: '—', unit: 'RPM', rw: 'R', group: 'monitoring' },
-  { id: 8, nameEn: 'Elapsed MWH', nameAr: 'طاقة كيلو واط ساعة', range: '0–65535', defaultVal: '—', unit: 'MWH', rw: 'R', group: 'monitoring' },
-  { id: 9, nameEn: 'Elapsed Run Time', nameAr: 'وقت التشغيل', range: '0–65535', defaultVal: '—', unit: 'Hours', rw: 'R', group: 'monitoring' },
-  { id: 10, nameEn: 'DC Bus Memory', nameAr: 'ذاكرة حافلة DC', range: '0–1200', defaultVal: '—', unit: 'VDC', rw: 'R', group: 'monitoring' },
-  { id: 11, nameEn: 'DC Bus Volts', nameAr: 'جهد حافلة DC', range: '0–1200', defaultVal: '—', unit: 'VDC', rw: 'R', group: 'monitoring' },
-  { id: 12, nameEn: 'Drive Temp', nameAr: 'درجة حرارة الدرايف', range: '—40–200', defaultVal: '—', unit: 'DegC', rw: 'R', group: 'monitoring' },
-  { id: 13, nameEn: 'Drive Status 1', nameAr: 'حالة الدرايف 1', range: 'Bits', defaultVal: '—', unit: '—', rw: 'R', group: 'monitoring' },
-  { id: 14, nameEn: 'Drive Status 2', nameAr: 'حالة الدرايف 2', range: 'Bits', defaultVal: '—', unit: '—', rw: 'R', group: 'monitoring' },
-  { id: 15, nameEn: 'Testpoint Data', nameAr: 'بيانات نقطة الاختبار', range: '—', defaultVal: '—', unit: '—', rw: 'R', group: 'monitoring' },
-  { id: 16, nameEn: 'Testpoint Sel', nameAr: 'اختيار نقطة الاختبار', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'monitoring' },
-  { id: 17, nameEn: 'Motor OL Count', nameAr: 'عداد حماية الموتور', range: '0–600', defaultVal: '—', unit: 'sec', rw: 'R', group: 'monitoring' },
-  { id: 18, nameEn: 'Vout/Vin Ratio', nameAr: 'نسبة الجهد', range: '0–200', defaultVal: '—', unit: '%', rw: 'R', group: 'monitoring' },
-  { id: 19, nameEn: 'Firmware Version', nameAr: 'إصدار البرنامج', range: '—', defaultVal: '—', unit: '—', rw: 'R', group: 'monitoring' },
-  { id: 20, nameEn: 'Drive Type', nameAr: 'نوع الدرايف', range: '—', defaultVal: '—', unit: '—', rw: 'R', group: 'monitoring' },
+  // ==================== 1. FILE: Monitor ====================
+  // Group: Metering
+  { id: 1, nameEn: 'Output Frequency', nameAr: 'تردد الخرج', range: '0–500', defaultVal: '—', unit: 'Hz', rw: 'R', group: 'monitor', subGroup: 'Metering' },
+  { id: 2, nameEn: 'Commanded SpdRef', nameAr: 'مرجع السرعة المأمور', range: '0–500', defaultVal: '—', unit: 'Hz', rw: 'R', group: 'monitor', subGroup: 'Metering' },
+  { id: 3, nameEn: 'Mtr Vel Fdbk', nameAr: 'تغذية راجعة سرعة الموتور', range: '0–65535', defaultVal: '—', unit: 'RPM', rw: 'R', group: 'monitor', subGroup: 'Metering' },
+  { id: 4, nameEn: 'Commanded Trq', nameAr: 'العزم المأمور', range: '—800–800', defaultVal: '—', unit: '%', rw: 'R', group: 'monitor', subGroup: 'Metering' },
+  { id: 5, nameEn: 'Torque Cur Fdbk', nameAr: 'تغذية راجعة تيار العزم', range: '0–Drive Max', defaultVal: '—', unit: 'Amps', rw: 'R', group: 'monitor', subGroup: 'Metering' },
+  { id: 6, nameEn: 'Flux Cur Fdbk', nameAr: 'تغذية راجعة تيار الفيض', range: '0–Drive Max', defaultVal: '—', unit: 'Amps', rw: 'R', group: 'monitor', subGroup: 'Metering' },
+  { id: 7, nameEn: 'Output Current', nameAr: 'تيار الخرج', range: '0–Drive Max', defaultVal: '—', unit: 'Amps', rw: 'R', group: 'monitor', subGroup: 'Metering' },
+  { id: 8, nameEn: 'Output Voltage', nameAr: 'جهد الخرج', range: '0–Drive Max', defaultVal: '—', unit: 'VAC', rw: 'R', group: 'monitor', subGroup: 'Metering' },
+  { id: 9, nameEn: 'Output Power', nameAr: 'قدرة الخرج', range: '—Rated–Rated', defaultVal: '—', unit: 'kW', rw: 'R', group: 'monitor', subGroup: 'Metering' },
+  { id: 11, nameEn: 'DC Bus Volts', nameAr: 'جهد حافلة المستمر DC', range: '0–1200', defaultVal: '—', unit: 'VDC', rw: 'R', group: 'monitor', subGroup: 'Metering' },
 
-  // Motor Data
-  { id: 27, nameEn: 'Motor NP Volts', nameAr: 'جهد اسمي موتور', range: '1–690', defaultVal: 'Per rating', unit: 'VAC', rw: 'RW', group: 'motor' },
-  { id: 28, nameEn: 'Motor NP Hz', nameAr: 'تردد اسمي موتور', range: '1–500', defaultVal: '60', unit: 'Hz', rw: 'RW', group: 'motor' },
-  { id: 29, nameEn: 'Motor OL Current', nameAr: 'تيار الحماية الحرارية', range: '0.1–Drive Rated', defaultVal: 'Per rating', unit: 'Amps', rw: 'RW', group: 'motor' },
-  { id: 30, nameEn: 'Motor NP RPM', nameAr: 'سرعة اسمية موتور', range: '1–65535', defaultVal: 'Per rating', unit: 'RPM', rw: 'RW', group: 'motor' },
-  { id: 31, nameEn: 'Motor NP Power', nameAr: 'قدرة اسمية موتور', range: '0.01–6553.5', defaultVal: 'Per rating', unit: 'kW', rw: 'RW', group: 'motor' },
-  { id: 32, nameEn: 'Motor NP PF', nameAr: 'معامل القدرة', range: '0.01–1.00', defaultVal: '0.85', unit: '—', rw: 'RW', group: 'motor' },
-  { id: 33, nameEn: 'Auto Amps Limit', nameAr: 'حد التيار التلقائي', range: '0–200', defaultVal: '150', unit: '%', rw: 'RW', group: 'motor' },
-  { id: 34, nameEn: 'Min Frequency', nameAr: 'أقل تردد', range: '0–500', defaultVal: '0', unit: 'Hz', rw: 'RW', group: 'motor' },
-  { id: 35, nameEn: 'Maximum Frequency', nameAr: 'أقصى تردد', range: '0–500', defaultVal: '60', unit: 'Hz', rw: 'RW', group: 'motor' },
-  { id: 36, nameEn: 'Base Frequency', nameAr: 'التردد الأساسي', range: '0–500', defaultVal: '60', unit: 'Hz', rw: 'RW', group: 'motor' },
-  { id: 37, nameEn: 'Base Voltage', nameAr: 'الجهد الأساسي', range: '0–690', defaultVal: '460', unit: 'VAC', rw: 'RW', group: 'motor' },
-  { id: 38, nameEn: 'Motor NP FLA', nameAr: 'تيار الحمل الكامل', range: '0–Drive Max', defaultVal: 'Per rating', unit: 'Amps', rw: 'RW', group: 'motor' },
+  // Group: Drive Data
+  { id: 20, nameEn: 'Rated Volts', nameAr: 'الجهد الاسمي للدرايف', range: '—', defaultVal: 'Per rating', unit: 'VAC', rw: 'R', group: 'monitor', subGroup: 'Drive Data' },
+  { id: 21, nameEn: 'Rated Amps', nameAr: 'التيار الاسمي للدرايف', range: '—', defaultVal: 'Per rating', unit: 'Amps', rw: 'R', group: 'monitor', subGroup: 'Drive Data' },
+  { id: 22, nameEn: 'Rated kW', nameAr: 'القدرة الاسمية بالماكينة kW', range: '—', defaultVal: 'Per rating', unit: 'kW', rw: 'R', group: 'monitor', subGroup: 'Drive Data' },
 
-  // Speed Reference
-  { id: 90, nameEn: 'Speed Ref A Sel', nameAr: 'مصدر مرجع السرعة A', range: '0–27', defaultVal: '1', unit: '—', rw: 'RW', group: 'speed' },
-  { id: 91, nameEn: 'Speed Ref B Sel', nameAr: 'مصدر مرجع السرعة B', range: '0–27', defaultVal: '7', unit: '—', rw: 'RW', group: 'speed' },
-  { id: 93, nameEn: 'Jog Speed', nameAr: 'سرعة التشغيل المؤقت', range: '0–500', defaultVal: '10', unit: 'Hz', rw: 'RW', group: 'speed' },
-  { id: 94, nameEn: 'Preset Speed 1', nameAr: 'سرعة مسبقة 1', range: '0–500', defaultVal: '5', unit: 'Hz', rw: 'RW', group: 'speed' },
-  { id: 95, nameEn: 'Preset Speed 2', nameAr: 'سرعة مسبقة 2', range: '0–500', defaultVal: '10', unit: 'Hz', rw: 'RW', group: 'speed' },
-  { id: 96, nameEn: 'Preset Speed 3', nameAr: 'سرعة مسبقة 3', range: '0–500', defaultVal: '20', unit: 'Hz', rw: 'RW', group: 'speed' },
-  { id: 97, nameEn: 'Preset Speed 4', nameAr: 'سرعة مسبقة 4', range: '0–500', defaultVal: '30', unit: 'Hz', rw: 'RW', group: 'speed' },
-  { id: 98, nameEn: 'Preset Speed 5', nameAr: 'سرعة مسبقة 5', range: '0–500', defaultVal: '40', unit: 'Hz', rw: 'RW', group: 'speed' },
-  { id: 99, nameEn: 'Preset Speed 6', nameAr: 'سرعة مسبقة 6', range: '0–500', defaultVal: '50', unit: 'Hz', rw: 'RW', group: 'speed' },
-  { id: 100, nameEn: 'Preset Speed 7', nameAr: 'سرعة مسبقة 7', range: '0–500', defaultVal: '60', unit: 'Hz', rw: 'RW', group: 'speed' },
-  { id: 101, nameEn: 'Skip Frequency 1', nameAr: 'تردد التخطي 1', range: '0–500', defaultVal: '0', unit: 'Hz', rw: 'RW', group: 'speed' },
-  { id: 102, nameEn: 'Skip Freq 1 Band', nameAr: 'نطاق التخطي 1', range: '0–30', defaultVal: '0', unit: 'Hz', rw: 'RW', group: 'speed' },
-  { id: 103, nameEn: 'Skip Frequency 2', nameAr: 'تردد التخطي 2', range: '0–500', defaultVal: '0', unit: 'Hz', rw: 'RW', group: 'speed' },
-  { id: 107, nameEn: 'Encoder Z Chan', nameAr: 'قناة الشفرة Z', range: '0–1', defaultVal: '1', unit: '—', rw: 'RW', group: 'speed' },
-  { id: 120, nameEn: 'Accel Time 1', nameAr: 'وقت التسارع 1', range: '0.0–3276.7', defaultVal: '10.0', unit: 'sec', rw: 'RW', group: 'speed' },
-  { id: 121, nameEn: 'Decel Time 1', nameAr: 'وقت التباطؤ 1', range: '0.0–3276.7', defaultVal: '10.0', unit: 'sec', rw: 'RW', group: 'speed' },
-  { id: 122, nameEn: 'Accel Time 2', nameAr: 'وقت التسارع 2', range: '0.0–3276.7', defaultVal: '20.0', unit: 'sec', rw: 'RW', group: 'speed' },
-  { id: 123, nameEn: 'Decel Time 2', nameAr: 'وقت التباطؤ 2', range: '0.0–3276.7', defaultVal: '20.0', unit: 'sec', rw: 'RW', group: 'speed' },
-  { id: 124, nameEn: 'S Curve %', nameAr: 'منحنى S', range: '0–100', defaultVal: '0', unit: '%', rw: 'RW', group: 'speed' },
-  { id: 125, nameEn: 'DC Brake Time', nameAr: 'وقت فرملة DC', range: '0.0–90.0', defaultVal: '0.0', unit: 'sec', rw: 'RW', group: 'speed' },
-  { id: 126, nameEn: 'DC Brake Level', nameAr: 'مستوى فرملة DC', range: '0–100', defaultVal: '0', unit: '%', rw: 'RW', group: 'speed' },
-  { id: 127, nameEn: 'DC Brk Frq', nameAr: 'تردد فرملة DC', range: '0.0–500', defaultVal: '0', unit: 'Hz', rw: 'RW', group: 'speed' },
+  // ==================== 2. FILE: Motor Control ====================
+  // Group: Motor Data
+  { id: 25, nameEn: 'Motor NP Volts', nameAr: 'جهد الموتور الاسمي', range: '1–690', defaultVal: 'Per rating', unit: 'VAC', rw: 'RW', group: 'motor_control', subGroup: 'Motor Data' },
+  { id: 26, nameEn: 'Motor NP Amps', nameAr: 'تيار الموتور الاسمي', range: '0.1–Drive Rated', defaultVal: 'Per rating', unit: 'Amps', rw: 'RW', group: 'motor_control', subGroup: 'Motor Data' },
+  { id: 27, nameEn: 'Motor NP Hertz', nameAr: 'تردد الموتور الاسمي', range: '1–500', defaultVal: '60', unit: 'Hz', rw: 'RW', group: 'motor_control', subGroup: 'Motor Data' },
+  { id: 28, nameEn: 'Motor NP RPM', nameAr: 'سرعة الموتور الاسمية', range: '1–65535', defaultVal: 'Per rating', unit: 'RPM', rw: 'RW', group: 'motor_control', subGroup: 'Motor Data' },
+  { id: 29, nameEn: 'Mtr NP Pwr Units', nameAr: 'وحدات قدرة الموتور', range: '0–1', defaultVal: '0 (kW)', unit: '—', rw: 'RW', group: 'motor_control', subGroup: 'Motor Data' },
+  { id: 30, nameEn: 'Motor NP Power', nameAr: 'قدرة الموتور الاسمية', range: '0.01–6553.5', defaultVal: 'Per rating', unit: 'kW', rw: 'RW', group: 'motor_control', subGroup: 'Motor Data' },
+  { id: 31, nameEn: 'Motor Poles', nameAr: 'عدد أقطاب الموتور', range: '2–32', defaultVal: '4', unit: '—', rw: 'RW', group: 'motor_control', subGroup: 'Motor Data' },
 
-  // Control
-  { id: 300, nameEn: 'Control Mode', nameAr: 'وضع التحكم', range: '0=V/Hz, 1=SVC, 2=FVC', defaultVal: '0', unit: '—', rw: 'RW', group: 'control' },
-  { id: 301, nameEn: 'Start Source 1', nameAr: 'مصدر الإقلاع 1', range: '0–6', defaultVal: '1 (HIM)', unit: '—', rw: 'RW', group: 'control' },
-  { id: 302, nameEn: 'Stop Mode 1', nameAr: 'وضع الإيقاف 1', range: '0=Ramp, 1=Coast, 2=DC Brake', defaultVal: '0', unit: '—', rw: 'RW', group: 'control' },
-  { id: 303, nameEn: 'Reverse Disable', nameAr: 'تعطيل الاتجاه العكسي', range: '0=Enabled, 1=Disabled', defaultVal: '0', unit: '—', rw: 'RW', group: 'control' },
-  { id: 304, nameEn: 'Flying Start En', nameAr: 'تفعيل الإقلاع الطائر', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'control' },
-  { id: 305, nameEn: 'Flying Start Gain', nameAr: 'كسب الإقلاع الطائر', range: '0.0–1.0', defaultVal: '0.5', unit: '—', rw: 'RW', group: 'control' },
-  { id: 306, nameEn: 'Torque Perf Mode', nameAr: 'وضع أداء العزم', range: '0–3', defaultVal: '0', unit: '—', rw: 'RW', group: 'control' },
-  { id: 307, nameEn: 'Motor Cntl Mode', nameAr: 'وضع تحكم الموتور', range: '0–5', defaultVal: '0', unit: '—', rw: 'RW', group: 'control' },
-  { id: 350, nameEn: 'Carrier Frequency', nameAr: 'تردد الناقل', range: '2–16', defaultVal: '4', unit: 'kHz', rw: 'RW', group: 'control' },
-  { id: 380, nameEn: 'Kp Speed Loop', nameAr: 'ربح تناسبي سرعة', range: '0.0–1000.0', defaultVal: '5.0', unit: '—', rw: 'RW', group: 'control' },
-  { id: 381, nameEn: 'Ki Speed Loop', nameAr: 'ربح تكاملي سرعة', range: '0.0–1000.0', defaultVal: '1.0', unit: '—', rw: 'RW', group: 'control' },
-  { id: 382, nameEn: 'Kd Speed Loop', nameAr: 'ربح اشتقاقي سرعة', range: '0.0–1000.0', defaultVal: '0', unit: '—', rw: 'RW', group: 'control' },
+  // Group: Mtr Ctrl Options
+  { id: 35, nameEn: 'Motor Ctrl Mode', nameAr: 'نمط التحكم بالموتور', range: '0=V/Hz, 1=SV, 2=FVC', defaultVal: '0', unit: '—', rw: 'RW', group: 'motor_control', subGroup: 'Mtr Ctrl Options' },
+  { id: 36, nameEn: 'Maximum Voltage', nameAr: 'أقصى جهد', range: '0–690', defaultVal: '460', unit: 'VAC', rw: 'RW', group: 'motor_control', subGroup: 'Mtr Ctrl Options' },
+  { id: 37, nameEn: 'Maximum Freq', nameAr: 'أقصى تردد', range: '0–500', defaultVal: '60', unit: 'Hz', rw: 'RW', group: 'motor_control', subGroup: 'Mtr Ctrl Options' },
+  { id: 38, nameEn: 'PWM Frequency', nameAr: 'تردد التقطيع PWM', range: '2–16', defaultVal: '4', unit: 'kHz', rw: 'RW', group: 'motor_control', subGroup: 'Mtr Ctrl Options' },
+  { id: 1660, nameEn: 'IPM Stc OfstSt K', nameAr: 'إزاحة IPM للمستقبلات', range: '—', defaultVal: '0', unit: '—', rw: 'RW', group: 'motor_control', subGroup: 'Mtr Ctrl Options' },
 
-  // Protection
-  { id: 400, nameEn: 'Over Voltage Lvl', nameAr: 'مستوى الجهد الزائد', range: '115–810', defaultVal: '760', unit: 'VDC', rw: 'RW', group: 'protection' },
-  { id: 401, nameEn: 'Under Voltage Lvl', nameAr: 'مستوى الجهد الناقص', range: '1–810', defaultVal: '280', unit: 'VDC', rw: 'RW', group: 'protection' },
-  { id: 402, nameEn: 'Motor OL Select', nameAr: 'اختيار حماية الموتور', range: '0–3', defaultVal: '1', unit: '—', rw: 'RW', group: 'protection' },
-  { id: 403, nameEn: 'Motor OL Hertz', nameAr: 'تردد حماية الموتور', range: '0–500', defaultVal: '60', unit: 'Hz', rw: 'RW', group: 'protection' },
-  { id: 404, nameEn: 'Ground Warn Lvl', nameAr: 'مستوى تحذير الأرضي', range: '0–600', defaultVal: '0', unit: 'mA', rw: 'RW', group: 'protection' },
-  { id: 405, nameEn: 'Ground Fault En', nameAr: 'تفعيل خطأ الأرضي', range: '0–1', defaultVal: '1', unit: '—', rw: 'RW', group: 'protection' },
-  { id: 406, nameEn: 'Stall Fault Time', nameAr: 'وقت خطأ الاختناق', range: '0–60', defaultVal: '60', unit: 'sec', rw: 'RW', group: 'protection' },
-  { id: 407, nameEn: 'Max Speed', nameAr: 'أقصى سرعة', range: '0–65535', defaultVal: '1750', unit: 'RPM', rw: 'RW', group: 'protection' },
-  { id: 420, nameEn: 'Fault Clear', nameAr: 'مسح الأخطاء', range: '0–2', defaultVal: '0', unit: '—', rw: 'RW', group: 'protection' },
-  { id: 421, nameEn: 'Fault Config 1', nameAr: 'تهيئة الأخطاء 1', range: 'Bits', defaultVal: '—', unit: '—', rw: 'RW', group: 'protection' },
-  { id: 426, nameEn: 'Auto Rstrt Tries', nameAr: 'محاولات إعادة التشغيل', range: '0–9', defaultVal: '0', unit: '—', rw: 'RW', group: 'protection' },
-  { id: 427, nameEn: 'Auto Rstrt Delay', nameAr: 'تأخير إعادة التشغيل', range: '0–300', defaultVal: '5.0', unit: 'sec', rw: 'RW', group: 'protection' },
-  { id: 430, nameEn: 'Shear Pin 1 Time', nameAr: 'وقت حماية التيار 1', range: '0.0–60.0', defaultVal: '0', unit: 'sec', rw: 'RW', group: 'protection' },
-  { id: 431, nameEn: 'Shear Pin 1 Level', nameAr: 'مستوى حماية التيار 1', range: '0–200', defaultVal: '0', unit: '%', rw: 'RW', group: 'protection' },
+  // Group: Volts per Hertz
+  { id: 65, nameEn: 'VHz Curve', nameAr: 'منحنى فولت/هيرتز', range: '0–2', defaultVal: '0', unit: '—', rw: 'RW', group: 'motor_control', subGroup: 'Volts per Hertz' },
 
-  // Diagnostics
-  { id: 940, nameEn: 'Fault 1 Code', nameAr: 'كود الخطأ 1', range: '0–65535', defaultVal: '—', unit: '—', rw: 'R', group: 'diagnostics' },
-  { id: 941, nameEn: 'Fault 2 Code', nameAr: 'كود الخطأ 2', range: '0–65535', defaultVal: '—', unit: '—', rw: 'R', group: 'diagnostics' },
-  { id: 942, nameEn: 'IGBT Temp C', nameAr: 'درجة حرارة IGBT', range: '—40–200', defaultVal: '—', unit: 'DegC', rw: 'R', group: 'diagnostics' },
-  { id: 943, nameEn: 'Drive Temp C', nameAr: 'درجة حرارة الدرايف', range: '—40–200', defaultVal: '—', unit: 'DegC', rw: 'R', group: 'diagnostics' },
-  { id: 944, nameEn: 'Drive Temp C 2', nameAr: 'درجة حرارة الدرايف 2', range: '—40–200', defaultVal: '—', unit: 'DegC', rw: 'R', group: 'diagnostics' },
-  { id: 945, nameEn: 'Motor Temp C', nameAr: 'درجة حرارة الموتور', range: '—40–200', defaultVal: '—', unit: 'DegC', rw: 'R', group: 'diagnostics' },
-  { id: 950, nameEn: 'Fault 1 Time', nameAr: 'وقت الخطأ 1', range: '0–65535', defaultVal: '—', unit: 'min', rw: 'R', group: 'diagnostics' },
-  { id: 951, nameEn: 'Fault 2 Time', nameAr: 'وقت الخطأ 2', range: '0–65535', defaultVal: '—', unit: 'min', rw: 'R', group: 'diagnostics' },
-  { id: 952, nameEn: 'Fault 3 Time', nameAr: 'وقت الخطأ 3', range: '0–65535', defaultVal: '—', unit: 'min', rw: 'R', group: 'diagnostics' },
-  { id: 960, nameEn: 'PID 1 Err', nameAr: 'خطأ PID 1', range: '—', defaultVal: '—', unit: '—', rw: 'R', group: 'diagnostics' },
+  // Group: Autotune
+  { id: 70, nameEn: 'Autotune', nameAr: 'الضبط التلقائي', range: '0–2', defaultVal: '0', unit: '—', rw: 'RW', group: 'motor_control', subGroup: 'Autotune' },
+  { id: 71, nameEn: 'Autotune Torque', nameAr: 'عزم الضبط التلقائي', range: '0–100', defaultVal: '100', unit: '%', rw: 'RW', group: 'motor_control', subGroup: 'Autotune' },
+  { id: 1630, nameEn: 'IPM_Lg_25_pct', nameAr: 'معامل Lg بنسبة 25%', range: '—', defaultVal: '0', unit: '—', rw: 'RW', group: 'motor_control', subGroup: 'Autotune' },
+  { id: 1631, nameEn: 'IPM_Lg_50_pct', nameAr: 'معامل Lg بنسبة 50%', range: '—', defaultVal: '0', unit: '—', rw: 'RW', group: 'motor_control', subGroup: 'Autotune' },
+  { id: 1632, nameEn: 'IPM_Lg_75_pct', nameAr: 'معامل Lg بنسبة 75%', range: '—', defaultVal: '0', unit: '—', rw: 'RW', group: 'motor_control', subGroup: 'Autotune' },
+  { id: 1633, nameEn: 'IPM_Lg_100_pct', nameAr: 'معامل Lg بنسبة 100%', range: '—', defaultVal: '0', unit: '—', rw: 'RW', group: 'motor_control', subGroup: 'Autotune' },
+  { id: 1634, nameEn: 'IPM_Lg_125_pct', nameAr: 'معامل Lg بنسبة 125%', range: '—', defaultVal: '0', unit: '—', rw: 'RW', group: 'motor_control', subGroup: 'Autotune' },
+  { id: 1635, nameEn: 'IPM_Ld_0_pct', nameAr: 'معامل Ld بنسبة 0%', range: '—', defaultVal: '0', unit: '—', rw: 'RW', group: 'motor_control', subGroup: 'Autotune' },
+  { id: 1636, nameEn: 'IPM_Ld_100_pct', nameAr: 'معامل Ld بنسبة 100%', range: '—', defaultVal: '0', unit: '—', rw: 'RW', group: 'motor_control', subGroup: 'Autotune' },
+
+  // ==================== 3. FILE: Feedback & I/O ====================
+  // Group: DigIn Functions
+  { id: 150, nameEn: 'Digital In Cfg', nameAr: 'تهيئة الدخل الرقمي', range: 'Bits', defaultVal: '—', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 155, nameEn: 'DI Enable', nameAr: 'تفعيل الدخل الرقمي', range: '0–1', defaultVal: '1', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 156, nameEn: 'DI Clear Fault', nameAr: 'دخل رقمي مسح الأخطاء', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 157, nameEn: 'DI Aux Fault', nameAr: 'دخل رقمي عطل مساعد', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 158, nameEn: 'DI Stop', nameAr: 'دخل رقمي إيقاف', range: '0–1', defaultVal: '1', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 159, nameEn: 'DI Cur Lmt Stop', nameAr: 'دخل رقمي إيقاف حد التيار', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 160, nameEn: 'DI Coast Stop', nameAr: 'دخل رقمي إيقاف حر', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 161, nameEn: 'DI Start', nameAr: 'دخل رقمي تشغيل', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 162, nameEn: 'DI Fwd Reverse', nameAr: 'دخل رقمي أمامي/عكسي', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 163, nameEn: 'DI Run', nameAr: 'دخل رقمي دوران', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 164, nameEn: 'DI Run Forward', nameAr: 'دخل رقمي دوران أمامي', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 165, nameEn: 'DI Run Reverse', nameAr: 'دخل رقمي دوران عكسي', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 166, nameEn: 'DI Jog 1', nameAr: 'دخل رقمي حركة بطيئة 1', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 167, nameEn: 'DI Jog 1 Forward', nameAr: 'دخل رقمي حركة بطيئة 1 أمامي', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 168, nameEn: 'DI Jog 1 Reverse', nameAr: 'دخل رقمي حركة بطيئة 1 عكسي', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 169, nameEn: 'DI Jog 2', nameAr: 'دخل رقمي حركة بطيئة 2', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 170, nameEn: 'DI Jog 2 Forward', nameAr: 'دخل رقمي حركة بطيئة 2 أمامي', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 171, nameEn: 'DI Jog 2 Reverse', nameAr: 'دخل رقمي حركة بطيئة 2 عكسي', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 172, nameEn: 'DI Manual Ctrl', nameAr: 'دخل رقمي تحكم يدوي', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 173, nameEn: 'DI Speed Sel 0', nameAr: 'دخل رقمي اختيار السرعة 0', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 174, nameEn: 'DI Speed Sel 1', nameAr: 'دخل رقمي اختيار السرعة 1', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 175, nameEn: 'DI Speed Sel 2', nameAr: 'دخل رقمي اختيار السرعة 2', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 176, nameEn: 'DI HOA Start', nameAr: 'دخل رقمي تشغيل HOA', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 179, nameEn: 'DI Accel 2', nameAr: 'دخل رقمي تسارع 2', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+  { id: 180, nameEn: 'DI Decel 2', nameAr: 'دخل رقمي تباطؤ 2', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'DigIn Functions' },
+
+  // Group: Control Board IO / Digital Inputs
+  { id: 220, nameEn: 'Digital In Sts', nameAr: 'حالة المدخلات الرقمية', range: 'Bits', defaultVal: '—', unit: '—', rw: 'R', group: 'feedback_io', subGroup: 'Digital Inputs' },
+  { id: 222, nameEn: 'Dig In Filt Mask', nameAr: 'قناع فلتر الدخل الرقمي', range: 'Bits', defaultVal: '—', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'Digital Inputs' },
+  { id: 223, nameEn: 'Dig In Filt', nameAr: 'فلتر الدخل الرقمي', range: '0–100', defaultVal: '0', unit: 'ms', rw: 'RW', group: 'feedback_io', subGroup: 'Digital Inputs' },
+
+  // Group: Digital Outputs
+  { id: 225, nameEn: 'Dig Out Sts', nameAr: 'حالة المخرجات الرقمية', range: 'Bits', defaultVal: '—', unit: '—', rw: 'R', group: 'feedback_io', subGroup: 'Digital Outputs' },
+  { id: 226, nameEn: 'Dig Out Invert', nameAr: 'عكس المخرج الرقمي', range: 'Bits', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'Digital Outputs' },
+  { id: 230, nameEn: 'RO0 Sel', nameAr: 'اختيار ريلاي الخرج 0', range: '0–50', defaultVal: '1', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'Digital Outputs' },
+  { id: 231, nameEn: 'RO0 Level Sel', nameAr: 'اختيار مستوى ريلاي الخرج 0', range: '0–50', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'Digital Outputs' },
+  { id: 232, nameEn: 'RO0 Level', nameAr: 'مستوى ريلاي الخرج 0', range: '—', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'Digital Outputs' },
+  { id: 233, nameEn: 'RO0 Level CmpSts', nameAr: 'حالة مقارنة مستوى ريلاي الخرج 0', range: 'Bits', defaultVal: '—', unit: '—', rw: 'R', group: 'feedback_io', subGroup: 'Digital Outputs' },
+  { id: 240, nameEn: 'TO0 Sel', nameAr: 'اختيار الخرج الترانزستوري 0', range: '0–50', defaultVal: '1', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'Digital Outputs' },
+  { id: 241, nameEn: 'TO0 Level Sel', nameAr: 'اختيار مستوى الخرج الترانزستوري 0', range: '0–50', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'Digital Outputs' },
+  { id: 242, nameEn: 'TO0 Level', nameAr: 'مستوى الخرج الترانزستوري 0', range: '—', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'Digital Outputs' },
+  { id: 243, nameEn: 'TO0 Level CmpSts', nameAr: 'حالة مقارنة مستوى الخرج الترانزستوري 0', range: 'Bits', defaultVal: '—', unit: '—', rw: 'R', group: 'feedback_io', subGroup: 'Digital Outputs' },
+
+  // Group: Motor PTC
+  { id: 250, nameEn: 'PTC Cfg', nameAr: 'تهيئة حماية الحرارة PTC', range: '0–2', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'Motor PTC' },
+  { id: 251, nameEn: 'PTC Status', nameAr: 'حالة حماية الحرارة PTC', range: 'Bits', defaultVal: '—', unit: '—', rw: 'R', group: 'feedback_io', subGroup: 'Motor PTC' },
+
+  // Group: Analog Inputs
+  { id: 255, nameEn: 'Anlg In Type', nameAr: 'نوع الدخل التماثلي', range: '0–3', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'Analog Inputs' },
+  { id: 260, nameEn: 'Anlg In0 Value', nameAr: 'قيمة الدخل التماثلي 0', range: '—', defaultVal: '—', unit: 'V/mA', rw: 'R', group: 'feedback_io', subGroup: 'Analog Inputs' },
+  { id: 261, nameEn: 'Anlg In0 Hi', nameAr: 'أقصى قيمة للدخل التماثلي 0', range: '—', defaultVal: '10.0', unit: 'V', rw: 'RW', group: 'feedback_io', subGroup: 'Analog Inputs' },
+  { id: 262, nameEn: 'Anlg In0 Lo', nameAr: 'أدنى قيمة للدخل التماثلي 0', range: '—', defaultVal: '0.0', unit: 'V', rw: 'RW', group: 'feedback_io', subGroup: 'Analog Inputs' },
+
+  // Group: Analog Outputs
+  { id: 270, nameEn: 'Anlg Out Type', nameAr: 'نوع الخرج التماثلي', range: '0–3', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'Analog Outputs' },
+  { id: 275, nameEn: 'Anlg Out0 Sel', nameAr: 'اختيار الخرج التماثلي 0', range: '0–50', defaultVal: '0', unit: '—', rw: 'RW', group: 'feedback_io', subGroup: 'Analog Outputs' },
+  { id: 277, nameEn: 'Anlg Out0 Data', nameAr: 'بيانات الخرج التماثلي 0', range: '—', defaultVal: '—', unit: '—', rw: 'R', group: 'feedback_io', subGroup: 'Analog Outputs' },
+  { id: 278, nameEn: 'Anlg Out0 DataHi', nameAr: 'بيانات الخرج التماثلي 0 العليا', range: '—', defaultVal: '100.0', unit: '%', rw: 'RW', group: 'feedback_io', subGroup: 'Analog Outputs' },
+  { id: 279, nameEn: 'Anlg Out0 DataLo', nameAr: 'بيانات الخرج التماثلي 0 السفلى', range: '—', defaultVal: '0.0', unit: '%', rw: 'RW', group: 'feedback_io', subGroup: 'Analog Outputs' },
+  { id: 280, nameEn: 'Anlg Out0 Hi', nameAr: 'أقصى قيمة للخرج التماثلي 0', range: '—', defaultVal: '10.0', unit: 'V', rw: 'RW', group: 'feedback_io', subGroup: 'Analog Outputs' },
+  { id: 281, nameEn: 'Anlg Out0 Lo', nameAr: 'أدنى قيمة للخرج التماثلي 0', range: '—', defaultVal: '0.0', unit: 'V', rw: 'RW', group: 'feedback_io', subGroup: 'Analog Outputs' },
+  { id: 282, nameEn: 'Anlg Out0 Val', nameAr: 'قيمة الخرج التماثلي 0', range: '—', defaultVal: '—', unit: 'V/mA', rw: 'R', group: 'feedback_io', subGroup: 'Analog Outputs' },
+
+  // ==================== 4. FILE: Drive Cfg ====================
+  // Group: Preferences
+  { id: 300, nameEn: 'Speed Units', nameAr: 'وحدات السرعة', range: '0=Hz, 1=RPM', defaultVal: '0', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Preferences' },
+  { id: 301, nameEn: 'Access Level', nameAr: 'مستوى الصلاحيات', range: '0–2', defaultVal: '1', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Preferences' },
+  { id: 302, nameEn: 'Language', nameAr: 'اللغة', range: '0–10', defaultVal: '1', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Preferences' },
+
+  // Group: Control Cfg
+  { id: 305, nameEn: 'Voltage Class', nameAr: 'فئة الجهد', range: '0–5', defaultVal: '2', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Control Cfg' },
+  { id: 306, nameEn: 'Duty Rating', nameAr: 'صنف الخدمة / التدفئة', range: '0–2', defaultVal: '0', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Control Cfg' },
+  { id: 308, nameEn: 'Direction Mode', nameAr: 'نمط اتجاه الدوران', range: '0–2', defaultVal: '0', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Control Cfg' },
+  { id: 309, nameEn: 'SpdTrqPsn Mode A', nameAr: 'نمط سرعة/عزم/موقع A', range: '0–5', defaultVal: '0', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Control Cfg' },
+
+  // Group: Auto Manual Ctrl
+  { id: 324, nameEn: 'Logic Mask', nameAr: 'قناع المنطق', range: 'Bits', defaultVal: '—', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Auto Manual Ctrl' },
+  { id: 325, nameEn: 'Auto Mask', nameAr: 'قناع الأوتوماتيك', range: 'Bits', defaultVal: '—', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Auto Manual Ctrl' },
+  { id: 326, nameEn: 'Manual Cmd Mask', nameAr: 'قناع الأمر اليدوي', range: 'Bits', defaultVal: '—', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Auto Manual Ctrl' },
+  { id: 327, nameEn: 'Manual Ref Mask', nameAr: 'قناع مرجع التحكم اليدوي', range: 'Bits', defaultVal: '—', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Auto Manual Ctrl' },
+  { id: 328, nameEn: 'Alt Man Ref Sel', nameAr: 'اختيار مرجع يدوي بديل', range: '0–50', defaultVal: '0', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Auto Manual Ctrl' },
+  { id: 329, nameEn: 'Alt Man Ref AnHi', nameAr: 'أقصى قيمة تماثلية للمرجع اليدوي البديل', range: '—', defaultVal: '100.0', unit: '%', rw: 'RW', group: 'drive_cfg', subGroup: 'Auto Manual Ctrl' },
+  { id: 330, nameEn: 'Alt Man Ref AnLo', nameAr: 'أدنى قيمة تماثلية للمرجع اليدوي البديل', range: '—', defaultVal: '0.0', unit: '%', rw: 'RW', group: 'drive_cfg', subGroup: 'Auto Manual Ctrl' },
+  { id: 331, nameEn: 'Manual Preload', nameAr: 'التحميل المسبق اليدوي', range: '—', defaultVal: '0', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Auto Manual Ctrl' },
+
+  // Group: Braking Features
+  { id: 370, nameEn: 'Stop Mode A', nameAr: 'نمط الإيقاف A', range: '0=Ramp, 1=Coast, 2=DC Brake', defaultVal: '0', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Braking Features' },
+  { id: 371, nameEn: 'Stop Mode B', nameAr: 'نمط الإيقاف B', range: '0=Ramp, 1=Coast, 2=DC Brake', defaultVal: '0', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Braking Features' },
+  { id: 372, nameEn: 'Bus Reg Mode A', nameAr: 'نمط تنظيم الحافلة A', range: '0–2', defaultVal: '1', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Braking Features' },
+  { id: 373, nameEn: 'Bus Reg Mode B', nameAr: 'نمط تنظيم الحافلة B', range: '0–2', defaultVal: '1', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Braking Features' },
+  { id: 382, nameEn: 'DB Resistor Type', nameAr: 'نوع مقاومة الفرملة', range: '0–2', defaultVal: '0', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Braking Features' },
+  { id: 383, nameEn: 'DB Ext Ohms', nameAr: 'قيمة المقاومة الخارجية بالأوم', range: '0.0–1000.0', defaultVal: '0.0', unit: 'Ohms', rw: 'RW', group: 'drive_cfg', subGroup: 'Braking Features' },
+  { id: 384, nameEn: 'DB Ext Watts', nameAr: 'قدرة المقاومة الخارجية بالواط', range: '0–65535', defaultVal: '0', unit: 'Watts', rw: 'RW', group: 'drive_cfg', subGroup: 'Braking Features' },
+  { id: 385, nameEn: 'DB ExtPulseWatts', nameAr: 'قدرة النبضة للمقاومة الخارجية', range: '0–65535', defaultVal: '0', unit: 'Watts', rw: 'RW', group: 'drive_cfg', subGroup: 'Braking Features' },
+  { id: 392, nameEn: 'Stop Dwell Time', nameAr: 'زمن التوقف الثابت', range: '0.0–90.0', defaultVal: '0.0', unit: 'sec', rw: 'RW', group: 'drive_cfg', subGroup: 'Braking Features' },
+  { id: 409, nameEn: 'Dec Inhibit Actn', nameAr: 'إجراء منع التباطؤ', range: '0–2', defaultVal: '0', unit: '—', rw: 'RW', group: 'drive_cfg', subGroup: 'Braking Features' },
+
+  // ==================== 5. FILE: Protection ====================
+  // Group: Motor Overload
+  { id: 410, nameEn: 'Motor OL Actn', nameAr: 'إجراء الحمل الزائد للموتور', range: '0–3', defaultVal: '1', unit: '—', rw: 'RW', group: 'protection', subGroup: 'Motor Overload' },
+  { id: 411, nameEn: 'Mtr OL at Pwr Up', nameAr: 'الحمل الزائد عند التشغيل', range: '0–1', defaultVal: '0', unit: '—', rw: 'RW', group: 'protection', subGroup: 'Motor Overload' },
+  { id: 412, nameEn: 'Mtr OL Alarm Lvl', nameAr: 'مستوى إنذار الحمل الزائد', range: '0–100', defaultVal: '100', unit: '%', rw: 'RW', group: 'protection', subGroup: 'Motor Overload' },
+  { id: 413, nameEn: 'Mtr OL Factor', nameAr: 'معامل الحمل الزائد', range: '0.20–1.50', defaultVal: '1.00', unit: '—', rw: 'RW', group: 'protection', subGroup: 'Motor Overload' },
+  { id: 414, nameEn: 'Mtr OL Hertz', nameAr: 'تردد الحمل الزائد', range: '0–500', defaultVal: '60', unit: 'Hz', rw: 'RW', group: 'protection', subGroup: 'Motor Overload' },
+  { id: 415, nameEn: 'Mtr OL Reset Lvl', nameAr: 'مستوى إعادة ضبط الحمل الزائد', range: '0–100', defaultVal: '85', unit: '%', rw: 'RW', group: 'protection', subGroup: 'Motor Overload' },
+  { id: 416, nameEn: 'MtrOL Reset Time', nameAr: 'زمن إعادة ضبط الحمل الزائد', range: '0–600', defaultVal: '60', unit: 'sec', rw: 'RW', group: 'protection', subGroup: 'Motor Overload' },
+
+  // Group: Load Limits
+  { id: 421, nameEn: 'Current Lmt Sel', nameAr: 'اختيار حد التيار', range: '0–3', defaultVal: '0', unit: '—', rw: 'RW', group: 'protection', subGroup: 'Load Limits' },
+  { id: 422, nameEn: 'Current Limit 1', nameAr: 'حد التيار 1', range: '0–200', defaultVal: '150', unit: '%', rw: 'RW', group: 'protection', subGroup: 'Load Limits' },
+  { id: 434, nameEn: 'Shear Pin Cfg', nameAr: 'تهيئة حماية Shear Pin', range: '0–3', defaultVal: '0', unit: '—', rw: 'RW', group: 'protection', subGroup: 'Load Limits' },
+  { id: 435, nameEn: 'Shear Pin 1 Actn', nameAr: 'إجراء حماية Shear Pin 1', range: '0–3', defaultVal: '0', unit: '—', rw: 'RW', group: 'protection', subGroup: 'Load Limits' },
+  { id: 436, nameEn: 'Shear Pin1 Level', nameAr: 'مستوى حماية Shear Pin 1', range: '0–200', defaultVal: '0', unit: '%', rw: 'RW', group: 'protection', subGroup: 'Load Limits' },
+  { id: 437, nameEn: 'Shear Pin 1 Time', nameAr: 'زمن حماية Shear Pin 1', range: '0.0–60.0', defaultVal: '0.0', unit: 'sec', rw: 'RW', group: 'protection', subGroup: 'Load Limits' },
+
+  // Group: Power Loss
+  { id: 449, nameEn: 'Power Loss Actn', nameAr: 'إجراء فقدان الطاقة', range: '0–3', defaultVal: '0', unit: '—', rw: 'RW', group: 'protection', subGroup: 'Power Loss' },
+  { id: 450, nameEn: 'Pwr Loss Mode A', nameAr: 'نمط فقدان الطاقة A', range: '0–2', defaultVal: '0', unit: '—', rw: 'RW', group: 'protection', subGroup: 'Power Loss' },
+
+  // Group: Flt/Alarm Cfg
+  { id: 950, nameEn: 'Minor Flt Cfg', nameAr: 'تهيئة الأعطال البسيطة', range: 'Bits', defaultVal: '—', unit: '—', rw: 'RW', group: 'protection', subGroup: 'Flt/Alarm Cfg' },
+
+  // ==================== 6. FILE: Speed Control ====================
+  // Group: Speed Limits
+  { id: 520, nameEn: 'Max Fwd Speed', nameAr: 'أقصى سرعة للأمام', range: '0–500', defaultVal: '60', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Limits' },
+  { id: 521, nameEn: 'Max Rev Speed', nameAr: 'أقصى سرعة للخلف', range: '0–500', defaultVal: '60', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Limits' },
+  { id: 522, nameEn: 'Min Fwd Speed', nameAr: 'أدنى سرعة للأمام', range: '0–500', defaultVal: '0', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Limits' },
+  { id: 523, nameEn: 'Min Rev Speed', nameAr: 'أدنى سرعة للخلف', range: '0–500', defaultVal: '0', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Limits' },
+
+  // Group: Speed Ramp Rates
+  { id: 535, nameEn: 'Accel Time 1', nameAr: 'زمن التسارع 1', range: '0.0–3276.7', defaultVal: '10.0', unit: 'sec', rw: 'RW', group: 'speed_control', subGroup: 'Speed Ramp Rates' },
+  { id: 536, nameEn: 'Accel Time 2', nameAr: 'زمن التسارع 2', range: '0.0–3276.7', defaultVal: '10.0', unit: 'sec', rw: 'RW', group: 'speed_control', subGroup: 'Speed Ramp Rates' },
+  { id: 537, nameEn: 'Decel Time 1', nameAr: 'زمن التباطؤ 1', range: '0.0–3276.7', defaultVal: '10.0', unit: 'sec', rw: 'RW', group: 'speed_control', subGroup: 'Speed Ramp Rates' },
+  { id: 538, nameEn: 'Decel Time 2', nameAr: 'زمن التباطؤ 2', range: '0.0–3276.7', defaultVal: '10.0', unit: 'sec', rw: 'RW', group: 'speed_control', subGroup: 'Speed Ramp Rates' },
+  { id: 539, nameEn: 'Jog Acc Dec Time', nameAr: 'زمن تسارع/تباطؤ الحركة البطيئة', range: '0.0–3276.7', defaultVal: '10.0', unit: 'sec', rw: 'RW', group: 'speed_control', subGroup: 'Speed Ramp Rates' },
+
+  // Group: Speed Reference
+  { id: 545, nameEn: 'Spd Ref A Sel', nameAr: 'اختيار مرجع السرعة A', range: '0–30', defaultVal: '1', unit: '—', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 546, nameEn: 'Spd Ref A Stpt', nameAr: 'نقطة ضبط مرجع السرعة A', range: '0–500', defaultVal: '0', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 547, nameEn: 'Spd Ref A AnlgHi', nameAr: 'أقصى قيمة تماثلية لمرجع السرعة A', range: '0–500', defaultVal: '60', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 548, nameEn: 'Spd Ref A AnlgLo', nameAr: 'أدنى قيمة تماثلية لمرجع السرعة A', range: '0–500', defaultVal: '0', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 550, nameEn: 'Spd Ref B Sel', nameAr: 'اختيار مرجع السرعة B', range: '0–30', defaultVal: '2', unit: '—', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 551, nameEn: 'Spd Ref B Stpt', nameAr: 'نقطة ضبط مرجع السرعة B', range: '0–500', defaultVal: '0', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 552, nameEn: 'Spd Ref B AnlgHi', nameAr: 'أقصى قيمة تماثلية لمرجع السرعة B', range: '0–500', defaultVal: '60', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 553, nameEn: 'Spd Ref B AnlgLo', nameAr: 'أدنى قيمة تماثلية لمرجع السرعة B', range: '0–500', defaultVal: '0', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 556, nameEn: 'Jog Speed 1', nameAr: 'سرعة الحركة البطيئة 1', range: '0–500', defaultVal: '10', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 557, nameEn: 'Jog Speed 2', nameAr: 'سرعة الحركة البطيئة 2', range: '0–500', defaultVal: '10', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 566, nameEn: 'MOP Init Select', nameAr: 'اختيار القيمة الابتدائية لـ MOP', range: '0–2', defaultVal: '0', unit: '—', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 567, nameEn: 'MOP Init Stpt', nameAr: 'نقطة الضبط الابتدائية لـ MOP', range: '0–500', defaultVal: '0', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 571, nameEn: 'Preset Speed 1', nameAr: 'السرعة المسبقة 1', range: '0–500', defaultVal: '5', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 572, nameEn: 'Preset Speed 2', nameAr: 'السرعة المسبقة 2', range: '0–500', defaultVal: '10', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 573, nameEn: 'Preset Speed 3', nameAr: 'السرعة المسبقة 3', range: '0–500', defaultVal: '20', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 574, nameEn: 'Preset Speed 4', nameAr: 'السرعة المسبقة 4', range: '0–500', defaultVal: '30', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 575, nameEn: 'Preset Speed 5', nameAr: 'السرعة المسبقة 5', range: '0–500', defaultVal: '40', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 576, nameEn: 'Preset Speed 6', nameAr: 'السرعة المسبقة 6', range: '0–500', defaultVal: '50', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+  { id: 577, nameEn: 'Preset Speed 7', nameAr: 'السرعة المسبقة 7', range: '0–500', defaultVal: '60', unit: 'Hz', rw: 'RW', group: 'speed_control', subGroup: 'Speed Reference' },
+
+  // ==================== 7. FILE: Torque Control ====================
+  // Group: Torque Reference
+  { id: 675, nameEn: 'Trq Ref A Sel', nameAr: 'اختيار مرجع العزم A', range: '0–20', defaultVal: '0', unit: '—', rw: 'RW', group: 'torque_control', subGroup: 'Torque Reference' },
+  { id: 676, nameEn: 'Trq Ref A Stpt', nameAr: 'نقطة ضبط مرجع العزم A', range: '—800–800', defaultVal: '0', unit: '%', rw: 'RW', group: 'torque_control', subGroup: 'Torque Reference' },
+  { id: 677, nameEn: 'Trq Ref A AnlgHi', nameAr: 'أقصى قيمة تماثلية لمرجع العزم A', range: '—800–800', defaultVal: '100', unit: '%', rw: 'RW', group: 'torque_control', subGroup: 'Torque Reference' },
+  { id: 678, nameEn: 'Trq Ref A AnlgLo', nameAr: 'أدنى قيمة تماثلية لمرجع العزم A', range: '—800–800', defaultVal: '0', unit: '%', rw: 'RW', group: 'torque_control', subGroup: 'Torque Reference' },
+  { id: 679, nameEn: 'Trq Ref A Mult', nameAr: 'مضاعف مرجع العزم A', range: '0.00–1.00', defaultVal: '1.00', unit: '—', rw: 'RW', group: 'torque_control', subGroup: 'Torque Reference' },
+  { id: 680, nameEn: 'Trq Ref B Sel', nameAr: 'اختيار مرجع العزم B', range: '0–20', defaultVal: '0', unit: '—', rw: 'RW', group: 'torque_control', subGroup: 'Torque Reference' },
+  { id: 681, nameEn: 'Trq Ref B Stpt', nameAr: 'نقطة ضبط مرجع العزم B', range: '—800–800', defaultVal: '0', unit: '%', rw: 'RW', group: 'torque_control', subGroup: 'Torque Reference' },
+  { id: 682, nameEn: 'Trq Ref B AnlgHi', nameAr: 'أقصى قيمة تماثلية لمرجع العزم B', range: '—800–800', defaultVal: '100', unit: '%', rw: 'RW', group: 'torque_control', subGroup: 'Torque Reference' },
+  { id: 683, nameEn: 'Trq Ref B AnlgLo', nameAr: 'أدنى قيمة تماثلية لمرجع العزم B', range: '—800–800', defaultVal: '0', unit: '%', rw: 'RW', group: 'torque_control', subGroup: 'Torque Reference' },
+  { id: 684, nameEn: 'Trq Ref B Mult', nameAr: 'مضاعف مرجع العزم B', range: '0.00–1.00', defaultVal: '1.00', unit: '—', rw: 'RW', group: 'torque_control', subGroup: 'Torque Reference' },
+  { id: 685, nameEn: 'Selected Trq Ref', nameAr: 'مرجع العزم المختار', range: '—800–800', defaultVal: '—', unit: '%', rw: 'R', group: 'torque_control', subGroup: 'Torque Reference' },
+
+  // ==================== 8. FILE: Communication ====================
+  // Group: Comm Control
+  { id: 871, nameEn: 'Port 1 Reference', nameAr: 'مرجع البورت 1', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'communication', subGroup: 'Comm Control' },
+
+  // Group: DPI Datalinks
+  { id: 895, nameEn: 'Data In A1', nameAr: 'بيانات الدخل A1', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'communication', subGroup: 'DPI Datalinks' },
+  { id: 896, nameEn: 'Data In A2', nameAr: 'بيانات الدخل A2', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'communication', subGroup: 'DPI Datalinks' },
+  { id: 897, nameEn: 'Data In B1', nameAr: 'بيانات الدخل B1', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'communication', subGroup: 'DPI Datalinks' },
+  { id: 898, nameEn: 'Data In B2', nameAr: 'بيانات الدخل B2', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'communication', subGroup: 'DPI Datalinks' },
+  { id: 899, nameEn: 'Data In C1', nameAr: 'بيانات الدخل C1', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'communication', subGroup: 'DPI Datalinks' },
+  { id: 900, nameEn: 'Data In C2', nameAr: 'بيانات الدخل C2', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'communication', subGroup: 'DPI Datalinks' },
+  { id: 901, nameEn: 'Data In D1', nameAr: 'بيانات الدخل D1', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'communication', subGroup: 'DPI Datalinks' },
+  { id: 902, nameEn: 'Data In D2', nameAr: 'بيانات الدخل D2', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'communication', subGroup: 'DPI Datalinks' },
+  { id: 905, nameEn: 'Data Out A1', nameAr: 'بيانات الخرج A1', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'communication', subGroup: 'DPI Datalinks' },
+  { id: 906, nameEn: 'Data Out A2', nameAr: 'بيانات الخرج A2', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'communication', subGroup: 'DPI Datalinks' },
+  { id: 907, nameEn: 'Data Out B1', nameAr: 'بيانات الخرج B1', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'communication', subGroup: 'DPI Datalinks' },
+  { id: 908, nameEn: 'Data Out B2', nameAr: 'بيانات الخرج B2', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'communication', subGroup: 'DPI Datalinks' },
+  { id: 909, nameEn: 'Data Out C1', nameAr: 'بيانات الخرج C1', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'communication', subGroup: 'DPI Datalinks' },
+  { id: 910, nameEn: 'Data Out C2', nameAr: 'بيانات الخرج C2', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'communication', subGroup: 'DPI Datalinks' },
+  { id: 911, nameEn: 'Data Out D1', nameAr: 'بيانات الخرج D1', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'communication', subGroup: 'DPI Datalinks' },
+  { id: 912, nameEn: 'Data Out D2', nameAr: 'بيانات الخرج D2', range: '0–65535', defaultVal: '0', unit: '—', rw: 'RW', group: 'communication', subGroup: 'DPI Datalinks' },
+
+  // ==================== 9. FILE: Diagnostics ====================
+  // Group: Status
+  { id: 930, nameEn: 'Speed Ref Source', nameAr: 'مصدر مرجع السرعة', range: '0–30', defaultVal: '—', unit: '—', rw: 'R', group: 'diagnostics', subGroup: 'Status' },
+  { id: 931, nameEn: 'Last StartSource', nameAr: 'آخر مصدر تشغيل', range: '0–15', defaultVal: '—', unit: '—', rw: 'R', group: 'diagnostics', subGroup: 'Status' },
+  { id: 932, nameEn: 'Last Stop Source', nameAr: 'آخر مصدر إيقاف', range: '0–15', defaultVal: '—', unit: '—', rw: 'R', group: 'diagnostics', subGroup: 'Status' },
+  { id: 933, nameEn: 'Start Inhibits', nameAr: 'موانع التشغيل', range: 'Bits', defaultVal: '—', unit: '—', rw: 'R', group: 'diagnostics', subGroup: 'Status' },
+  { id: 934, nameEn: 'Last StrtInhibit', nameAr: 'آخر مانع تشغيل', range: 'Bits', defaultVal: '—', unit: '—', rw: 'R', group: 'diagnostics', subGroup: 'Status' },
+  { id: 935, nameEn: 'Drive Status 1', nameAr: 'حالة الدرايف 1', range: 'Bits', defaultVal: '—', unit: '—', rw: 'R', group: 'diagnostics', subGroup: 'Status' },
+  { id: 936, nameEn: 'Drive Status 2', nameAr: 'حالة الدرايف 2', range: 'Bits', defaultVal: '—', unit: '—', rw: 'R', group: 'diagnostics', subGroup: 'Status' },
+  { id: 937, nameEn: 'Condition Sts 1', nameAr: 'حالة الشروط 1', range: 'Bits', defaultVal: '—', unit: '—', rw: 'R', group: 'diagnostics', subGroup: 'Status' },
+
+  // Group: Fault/Alarm Info
+  { id: 951, nameEn: 'Last Fault Code', nameAr: 'كود آخر عطل', range: '0–65535', defaultVal: '—', unit: '—', rw: 'R', group: 'diagnostics', subGroup: 'Fault/Alarm Info' },
+  { id: 952, nameEn: 'Fault Status A', nameAr: 'حالة الأعطال A', range: 'Bits', defaultVal: '—', unit: '—', rw: 'R', group: 'diagnostics', subGroup: 'Fault/Alarm Info' },
+  { id: 953, nameEn: 'Fault Status B', nameAr: 'حالة الأعطال B', range: 'Bits', defaultVal: '—', unit: '—', rw: 'R', group: 'diagnostics', subGroup: 'Fault/Alarm Info' },
 ];
 
 export const faults: FaultCode[] = [
   { code: 'F02', nameEn: 'Auxiliary Input', nameAr: 'دخل مساعد', cause: 'ترمينال إيقاف مفتوح', solution: 'فحص توصيلات الترمينال' },
-  { code: 'F03', nameEn: 'Power Loss', nameAr: 'فقد الطاقة', cause: 'انقطاع الطاقة', solution: 'فحص مصدر الطاقة' },
-  { code: 'F04', nameEn: 'UnderVoltage', nameAr: 'جهد ناقص', cause: 'جهد منخفض على DC Bus', solution: 'فحص جهد الشبكة' },
-  { code: 'F05', nameEn: 'OverVoltage', nameAr: 'جهد زائد', cause: 'تباطؤ سريع أو جهد شبكة عالي', solution: 'إطالة وقت التباطؤ' },
-  { code: 'F06', nameEn: 'Motor Stalled', nameAr: 'توقف الموتور', cause: 'حمل زائد', solution: 'تقليل الحمل' },
-  { code: 'F07', nameEn: 'Motor OvrLoad', nameAr: 'حماية حرارية موتور', cause: 'حمل زائد أو تبريد ضعيف', solution: 'تقليل الحمل' },
-  { code: 'F08', nameEn: 'Heatsink OvrTmp', nameAr: 'حرارة مشتت حرارة زائدة', cause: 'درجة حرارة عالية', solution: 'تحسين التبريد' },
-  { code: 'F12', nameEn: 'HW OverCurrent', nameAr: 'تيار زائد صلب', cause: 'حمل صادم', solution: 'فحص حمل الموتور' },
-  { code: 'F13', nameEn: 'Ground Fault', nameAr: 'عطل أرضي', cause: 'عزل سلك تالف', solution: 'فحص الموتور والكابلات' },
-  { code: 'F38', nameEn: 'Phase U to Gnd', nameAr: 'عطل وجه U للأرض', cause: 'كابل تالف', solution: 'فحص الكابل' },
-  { code: 'F63', nameEn: 'SW OverCurrent', nameAr: 'تيار زائد برمجي', cause: 'إعداد خاطئ', solution: 'مراجعة حدود التيار' },
-  { code: 'F81', nameEn: 'Comm Loss', nameAr: 'فقد الاتصال', cause: 'كابل شبكة تالف', solution: 'فحص كابل الاتصالات' },
+  { code: 'F03', nameEn: 'Power Loss', nameAr: 'فقد الطاقة', cause: 'انقطاع الطاقة عن الدرايف', solution: 'فحص مصدر الجهد المغذي' },
+  { code: 'F04', nameEn: 'UnderVoltage', nameAr: 'جهد ناقص', cause: 'جهد منخفض على DC Bus', solution: 'فحص جهد الشبكة المصدرية' },
+  { code: 'F05', nameEn: 'OverVoltage', nameAr: 'جهد زائد', cause: 'تباطؤ سريع أو ارتفاع جهد الشبكة', solution: 'إطالة وقت التباطؤ Decel Time' },
+  { code: 'F06', nameEn: 'Motor Stalled', nameAr: 'توقف الموتور / توقف قسري', cause: 'حمل زائد أو إعاقة ميكانيكية', solution: 'فحص حمل المحرك والمجاري الميكانيكية' },
+  { code: 'F07', nameEn: 'Motor OvrLoad', nameAr: 'حماية حرارية للموتور', cause: 'حمل زائد لفترة طويلة', solution: 'تقليل الحمل ومراجعة P410-P416' },
+  { code: 'F08', nameEn: 'Heatsink OvrTmp', nameAr: 'حرارة مشتت حرارة زائدة', cause: 'انسداد تهوية أو تلف مروحة التبريد', solution: 'تحسين التبريد وتنظيف مروحة الدرايف' },
+  { code: 'F12', nameEn: 'HW OverCurrent', nameAr: 'تيار زائد عتادي', cause: 'قصر كهربائي أو صدمة حمل مفاجئة', solution: 'فحص كابلات الموتور والعزل' },
+  { code: 'F13', nameEn: 'Ground Fault', nameAr: 'عطل أرضي', cause: 'تسريب أرضي في أسلاك المحرك', solution: 'قياس عزل ملفات المحرك والكابلات' },
+  { code: 'F38', nameEn: 'Phase U to Gnd', nameAr: 'عطل الوجه U للأرضي', cause: 'تلف عزل الكابل للوجه U', solution: 'فحص واستبدال كابل الوجه U' },
+  { code: 'F63', nameEn: 'SW OverCurrent', nameAr: 'تيار زائد برمجياً', cause: 'تجاوز حد التيار المبرمج P422', solution: 'مراجعة إعدادات حد التيار والتطبيق' },
+  { code: 'F81', nameEn: 'Comm Loss', nameAr: 'فقد الاتصال الشبكي', cause: 'انقطاع الاتصال ببورت الشبكة', solution: 'فحص كابلات الشبكة وإعدادات P871' },
 ];
 
 export const quickReferenceIds = [
-  1, 2, 3, 4, 7, 11, 12, 27, 28, 29, 30, 31, 33, 34, 35, 90, 94, 120, 121, 300, 301, 302, 400, 401, 403, 407, 420, 940, 941, 943
+  1, 2, 3, 7, 8, 11, 20, 25, 26, 27, 28, 30, 35, 37, 65, 70, 150, 158, 161, 163, 220, 225, 255, 270, 300, 305, 370, 410, 421, 520, 535, 537, 545, 571, 675, 871, 930, 935, 951
 ];
